@@ -40,6 +40,10 @@ cd ..
 
 cd ..
 
-./input_tool/gen_input.sh $1
+cd input_tool
+
+./get_input.sh $1
+
+cd..
 
 exit 0
