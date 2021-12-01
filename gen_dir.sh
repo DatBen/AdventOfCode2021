@@ -1,11 +1,10 @@
 #!/bin/bash
 
 
-for i in {1..10}
-do
+
 echo "Building directory $i... "
-mkdir day$i
-cd day$i
+mkdir day$1
+cd day$1
 
 mkdir JavaScript
 cd JavaScript
@@ -37,5 +36,5 @@ cd ..
 
 
 cd ..
-done
+
 exit 0
