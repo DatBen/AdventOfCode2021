@@ -31,10 +31,15 @@ const toInt = (arr) => arr.map((i) => parseInt(i, 10));" > p2.mjs
 
 cd ..
 
+mkdir data
+
+
 
 cd ..
 
 
 cd ..
+
+./input_tool/gen_input.sh $1
 
 exit 0
