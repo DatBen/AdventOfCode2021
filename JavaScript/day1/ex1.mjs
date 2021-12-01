@@ -10,7 +10,7 @@ const res = array.reduce(
     }
     return [res[0], i];
   },
-  [0, 0]
+  [-1, 0]
 );
 
 console.log(res[0]);
