@@ -13,24 +13,12 @@ let act;
 
 let c=0;
 
-
-
-
-for (let i=1;i<2000;i++){
+for (let i=1;i<arr.length;i++){
     pred=arr[i-1];
     act=arr[i];
 
     if (act>pred){
         c++;
     }
-
-
-
-
-
 }
-
-
-
-
 console.log(c);
