@@ -1,0 +1,10 @@
+.headers on
+.once cookie
+select * from moz_cookies where host=".adventofcode.com";
+
+
+
+
+
+
+
