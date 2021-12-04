@@ -44,6 +44,6 @@ cd input_tool
 
 ./get_input.sh $1
 
-cd..
+cd ..
 
 exit 0
