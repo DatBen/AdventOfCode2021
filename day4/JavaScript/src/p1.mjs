@@ -1,90 +1,67 @@
 import { readFileSync } from "fs";
-var array = readFileSync("data/input").toString().split("\n");
+
+var array = readFileSync("data/data.txt").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
-const lTab = (arr) => {
-  let res = [];
-  let stock = [];
-  arr = arr.splice(2, arr.length);
-
-  arr.forEach((el) => {
-    if (el == "") {
-      res.push(stock);
-      stock = [];
-    } else {
-      let nt = [];
-      el.split(" ").forEach((vl) => {
-        if (vl !== "") {
-          nt.push(vl);
-        }
-      });
-
-      stock.push(nt);
-    }
-  });
-
-  return res;
-};
-
-const winTest = (grid, numb) => {
-  let end = Array.from({ length: 10 }, () => []);
-  for (let i = 0; i < 5; i++) {
+const init_boards = () => {
+  let boards = [];
+  for (let i = 0; i < 100; i++) {
+    let board = [];
     for (let j = 0; j < 5; j++) {
-      if (!numb.includes(grid[i][j])) {
-        end[i].push(grid[i][j]);
-        end[5 + j].push(grid[i][j]);
-      }
+      let row = toInt(array[i * 6 + 2 + j].split(" ").filter((i) => i != ""));
+      board.push(row);
     }
+    boards.push(board);
   }
-  let res = end.reduce((acc, val) => {
-    if (val.length == 0) {
-      acc = true;
-      return acc;
-    } else {
-      return acc;
-    }
-  }, false);
-  return res;
+  return boards;
 };
 
-const bingo_win = (array) => {
-  let num = array[0].split(",");
-  let grids = lTab(array);
-  let flag = true;
-  let win = undefined;
-  let i = 0;
-  let vrb = [];
-
-  while (flag) {
-    vrb.push(num[i]);
-
-    grids.forEach((el) => {
-      if (winTest(el, vrb)) {
-        win = el;
-        flag = false;
-      }
-    });
-
-    i++;
-  }
-
-  console.log(i);
-  return [win, vrb];
+const transpose = (board) => {
+  return board[0].map((_, colIndex) => board.map((row) => row[colIndex]));
 };
 
-let res = bingo_win(array);
-console.log(res);
-
-const getScore = (w, v) => {
-  let s1 = 0;
+const has_won = (board, drawn) => {
+  if (drawn.lenght < 5) {
+    return false;
+  }
+  const transposed = transpose(board);
   for (let i = 0; i < 5; i++) {
-    for (let j = 0; j < 5; j++) {
-      if (!v.includes(w[i][j])) {
-        s1 = s1 + parseInt(w[i][j], 10);
-      }
+    if (board[i].every((element) => drawn.includes(element))) {
+      return true;
+    }
+    if (transposed[i].every((element) => drawn.includes(element))) {
+      return true;
     }
   }
-  return s1 * v[v.length - 1];
+  return false;
 };
 
-console.log(getScore(res[0], res[1]));
+const solution = (board, drawn) => {
+  let sum = board.flat().reduce((res, element) => {
+    if (drawn.includes(element)) {
+      return res;
+    } else {
+      return res + element;
+    }
+  }, 0);
+  return sum * drawn[drawn.length - 1];
+};
+
+const draw = toInt(array[0].split(","));
+const boards = init_boards();
+let i = 5;
+let unfounded = true;
+let winning_board;
+let drawn;
+
+while (i <= draw.length && unfounded) {
+  drawn = draw.slice(0, i);
+  winning_board = boards.find((element) => has_won(element, drawn));
+  if (winning_board != undefined) {
+    unfounded = false;
+  }
+  i++;
+}
+
+console.log(solution(winning_board, drawn));
+
