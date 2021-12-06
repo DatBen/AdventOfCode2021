@@ -22,25 +22,25 @@ const range = (a, b) => {
 };
 
 const init_board = (data) => {
-  let init = [];
   let board = [];
   for (let i = 0; i < 1000; i++) {
-    init.push(0);
+    let add = [];
+    for (let j = 0; j < 1000; j++) {
+      add.push(0);
+    }
+    board.push(add);
   }
-  for (let i = 0; i < 1000; i++) {
-    board.push(init);
-  }
-
   data.forEach((vents) => {
     if (vents[0][0] === vents[1][0]) {
       let points = range(vents[0][1], vents[1][1]);
       points.forEach((j) => {
-        board[vents[0][0]][j] = board[vents[0][0]][j] + 1;
+        board[vents[0][0]][j]++;
       });
     } else if (vents[0][1] === vents[1][1]) {
       let points = range(vents[0][0], vents[1][0]);
+      console.log(points);
       points.forEach((j) => {
-        board[j][vents[0][1]] = board[j][vents[0][1]] + 1;
+        board[j][vents[0][1]]++;
       });
     }
   });
