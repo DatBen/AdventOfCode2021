@@ -38,7 +38,7 @@ const init_board = (data) => {
       });
     } else if (vents[0][1] === vents[1][1]) {
       let points = range(vents[0][0], vents[1][0]);
-      console.log(points);
+
       points.forEach((j) => {
         board[j][vents[0][1]]++;
       });
