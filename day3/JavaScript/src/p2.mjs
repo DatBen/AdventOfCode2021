@@ -1,56 +1,96 @@
 import { readFileSync } from "fs";
-var array = readFileSync("data/data.txt").toString().split("\n");
+
+var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
-let ox = array;
-let co = array;
-
-const reduce_ox = (arr, i) => {
-  let res = arr.reduce(
-    (res, value) => {
-      if (value[i] === "0") {
-        return [res[0] + 1, res[1]];
+const bst = (array) => {
+  return array.reduce(
+    (acc, val) => {
+      for (let i = 0; i < val.length; i++) {
+        if (parseInt(val.charAt(i), 10) === 1) {
+          acc[i][1] = acc[i][1] + 1;
+        } else {
+          acc[i][0] = acc[i][0] + 1;
+        }
       }
-      return [res[0], res[1] + 1];
-    },
-    [0, 0]
-  );
 
-  if (res[1] >= arr.length / 2) {
+      return acc;
+    },
+    Array.from({ length: array[0].length }, () => [0, 0])
+  );
+};
+
+const max = (a) => {
+  if (a[0] > a[1]) {
+    return "0";
+  } else {
     return "1";
   }
-
-  return "0";
 };
 
-const reduce_co = (arr, i) => {
-  let res = arr.reduce(
-    (res, value) => {
-      if (value[i] === "0") {
-        return [res[0] + 1, res[1]];
-      }
-      return [res[0], res[1] + 1];
-    },
-    [0, 0]
-  );
-  if (res[0] >= arr.length / 2) {
+const min = (a) => {
+  if (a[0] <= a[1]) {
     return "0";
+  } else {
+    return "1";
   }
-  return "1";
 };
 
-let index = 0;
-while (ox.length > 1) {
-  let res = reduce_ox(ox, index);
+const oxy_find = (arr) => {
+  let flag = true;
+  let stock = [];
+  let i = 0;
+  while (flag) {
+    let v = max(bst(arr)[i]);
+    arr.forEach((el) => {
+      if (el.charAt(i) === v) {
+        stock.push(el);
+      }
+    });
+    if (stock.length === 1) {
+      flag = false;
+      arr = stock;
 
-  ox = ox.filter((value) => value[index] === res);
-  index++;
-}
-index = 0;
-while (co.length > 1) {
-  let res = reduce_co(co, index);
-  co = co.filter((value) => value[index] === res);
-  index++;
-}
+    } else {
+      i++;
+      arr = stock;
+      stock = [];
+    }
+  }
+  return arr;
+};
 
-console.log(parseInt(ox, 2) * parseInt(co, 2));
+const c02_find = (arr) => {
+  let flag = true;
+  let stock = [];
+  let i = 0;
+  while (flag) {
+    let v = min(bst(arr)[i]);
+    arr.forEach((el) => {
+      if (el.charAt(i) === v) {
+        stock.push(el);
+      }
+    });
+    if (stock.length === 1) {
+      flag = false;
+      arr = stock;
+
+    } else {
+      i++;
+      arr = stock;
+      stock = [];
+    }
+    console.log("tgjhgk");
+    console.log(arr);
+  }
+  return arr;
+};
+
+let o = oxy_find(array);
+let c = c02_find(array);
+
+console.log(o);
+console.log(c);
+
+console.log(parseInt(o, 2) * parseInt(c, 2));
+

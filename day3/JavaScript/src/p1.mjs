@@ -1,4 +1,5 @@
 import { readFileSync } from "fs";
+
 var array = readFileSync("data/data.txt").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
@@ -23,3 +24,4 @@ for (let i = 0; i < 12; i++) {
   gamma = gamma + reduce_i(array, i) * Math.pow(2, 11 - i);
 }
 console.log(gamma * (Math.pow(2, 12) - gamma));
+
