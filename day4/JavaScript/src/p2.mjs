@@ -67,7 +67,4 @@ while (i <= draw.length) {
   i++;
 }
 
-console.log(last_winning_board);
-console.log(last_winning_draw);
-
 console.log(solution(last_winning_board, last_winning_draw));
