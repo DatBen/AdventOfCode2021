@@ -4,18 +4,18 @@ const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
 const data = toInt(array[0].split(","));
 
-function numMedian(a) {
-  a = a.slice(0).sort(function (x, y) {
-    return x - y;
-  });
-  var b = (a.length + 1) / 2;
-  return a.length % 2 ? a[b - 1] : (a[b - 1.5] + a[b - 0.5]) / 2;
-}
-
-const fuel_cost = (data) => {
-  const med = numMedian(data);
-
-  return data.reduce((res, value) => Math.abs(med - value) + res, 0);
+const mean = (a) => {
+  return Math.round(a.reduce((res, value) => value + res, 0) / a.length);
 };
 
-console.log(fuel_cost(data));
+const sum = (int) => {
+  return (int * (int + 1)) / 2;
+};
+
+const fuel_cost = (data) => {
+  const moy = mean(data);
+
+  return data.reduce((res, value) => sum(Math.abs(moy - value)) + res, 0);
+};
+
+console.log(fuel_cost([16, 1, 2, 0, 4, 2, 7, 1, 2, 14]));
