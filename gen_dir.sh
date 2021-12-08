@@ -36,14 +36,20 @@ mkdir src
 cd src
 
 touch p1.mjs
-echo "import { readFileSync } from 'fs';
+echo "console.time('exec time');
+import { readFileSync } from 'fs';
 var array = readFileSync('data/input').toString().split('\n');
-const toInt = (arr) => arr.map((i) => parseInt(i, 10));" > p1.mjs
+const toInt = (arr) => arr.map((i) => parseInt(i, 10));
+
+console.timeEnd('exec time');" >> p1.mjs
 touch p2.mjs
 
-echo "import { readFileSync } from 'fs';
+echo "console.time('exec time');
+import { readFileSync } from 'fs';
 var array = readFileSync('data/input').toString().split('\n');
-const toInt = (arr) => arr.map((i) => parseInt(i, 10));" > p2.mjs
+const toInt = (arr) => arr.map((i) => parseInt(i, 10));
+
+console.timeEnd('exec time');" >> p2.mjs
 
 
 cd ..

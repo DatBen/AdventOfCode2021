@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 
 var array = readFileSync("data/data.txt").toString().split("\n");
@@ -25,3 +27,4 @@ for (let i = 0; i < 12; i++) {
 }
 console.log(gamma * (Math.pow(2, 12) - gamma));
 
+console.timeEnd("exec time");

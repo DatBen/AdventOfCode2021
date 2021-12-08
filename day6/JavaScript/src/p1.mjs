@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
@@ -29,13 +31,11 @@ const oneDay = (arr) => {
 
 const simu = (n, arr) => {
   for (let i = 0; i < n; i++) {
-    
-    console.log(i);
-    console.log(arr.length);
-
     arr = oneDay(arr);
   }
   return arr.length;
 };
 
-simu(256, array);
+console.log(simu(80, array));
+
+console.timeEnd("exec time");

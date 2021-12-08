@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
@@ -57,3 +59,5 @@ const solution = board.flat().reduce((res, value) => {
 }, 0);
 
 console.log(solution);
+
+console.timeEnd("exec time");
