@@ -1,45 +1,27 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
-array = toInt(array[0].split(","));
+const file = toInt(array[0].split(","));
 
-const max = (arr) => {
-  return arr.reduce((acc, vl) => {
-    if (vl > acc) {
-      return vl;
-    } else {
-      return acc;
-    }
-  });
+const sum = (int) => {
+  return (int * (int + 1)) / 2;
 };
 
-const abs = (num) => {
-  if (num >= 0) {
-    return num;
-  } else {
-    return -num;
-  }
-};
-const test_pos = (n, arr) => {
-  return arr.reduce((acc, vl) => {
-    return (acc + (abs(vl - n))*(abs(vl - n)+1)/2);
-  }, 0);
-};
-
-const min_fuel = (arr) => {
-  let maxx = max(arr);
-
-  let min = -1;
-
-  for (let i = 0; i < maxx + 1; i++) {
-    let res = test_pos(i, arr);
-    if (res < min || min === -1) {
-      min = res;
+const solution = (data) => {
+  const max = Math.max(...data);
+  let res = data.reduce((res, value) => sum(value) + res, 0);
+  for (let i = 1; i <= max; i++) {
+    let temp = data.reduce((res, value) => sum(Math.abs(i - value)) + res, 0);
+    if (temp < res) {
+      res = temp;
     }
   }
-  return min;
+  return res;
 };
 
-console.log(min_fuel(array));
+console.log(solution(file));
 
+console.timeEnd("exec time");

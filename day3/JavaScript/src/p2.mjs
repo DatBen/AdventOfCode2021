@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 
 var array = readFileSync("data/input").toString().split("\n");
@@ -50,7 +52,6 @@ const oxy_find = (arr) => {
     if (stock.length === 1) {
       flag = false;
       arr = stock;
-
     } else {
       i++;
       arr = stock;
@@ -74,7 +75,6 @@ const c02_find = (arr) => {
     if (stock.length === 1) {
       flag = false;
       arr = stock;
-
     } else {
       i++;
       arr = stock;
@@ -94,3 +94,4 @@ console.log(c);
 
 console.log(parseInt(o, 2) * parseInt(c, 2));
 
+console.timeEnd("exec time");

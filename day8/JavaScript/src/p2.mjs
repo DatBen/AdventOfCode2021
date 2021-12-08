@@ -106,19 +106,16 @@ const returnNum = (dict, mot) => {
   }
 };
 
+const prompt_line = (line) => {
+  let dict = decrypt(line);
+  let output = line.split(" | ")[1].split(" ");
+  return output.reduce((acc, vl) => {
+    return acc + returnNum(dict, vl);
+  }, "");
+};
 
-const prompt_line = (line)=>{
-    let dict = decrypt(line);
-    let output = line.split(" | ")[1].split(" ");
-    return output.reduce((acc,vl)=>{
-        return acc+returnNum(dict,vl)
-
-    },"")
-
-}
-
-
-console.log(array.reduce((acc,vl)=>{
-    return acc+parseInt(prompt_line(vl),10)
-
-},0))
+console.log(
+  array.reduce((acc, vl) => {
+    return acc + parseInt(prompt_line(vl), 10);
+  }, 0)
+);

@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 
 var array = readFileSync("data/input").toString().split("\n");
@@ -103,32 +105,27 @@ const getScore = (w, v) => {
 
 //console.log(getScore(res[0], res[1]));
 
-
-
-
 let a = last(array);
 
-console.log(a)
+console.log(a);
 
 let num = array[0].split(",");
-console.log(num)
+console.log(num);
 
+const numt = (g, n) => {
+  let i = 0;
+  let st = [];
+  let flag = false;
+  while (!flag) {
+    st.push(n[i]);
+    i++;
+    flag = winTest(g, st);
+  }
+  return st;
+};
 
+console.log(numt(a[0], num));
 
-const numt = (g,n) => {
-    let i =0;
-    let st=[];
-    let flag =false;
-    while (!flag) {
-        st.push(n[i])
-        i++;
-        flag = winTest(g,st);
-    }
-    return st
-}
+console.log(getScore(a[0], numt(a[0], num)));
 
-console.log(numt(a[0],num))
-
-
-console.log(getScore(a[0], numt(a[0],num)));
-
+console.timeEnd("exec time");
