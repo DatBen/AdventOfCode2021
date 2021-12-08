@@ -88,7 +88,6 @@ const get5 = (lt, dict) => {
 
 const decrypt = (line) => {
   line = lineDeco(line);
-  console.log(line);
   let tes = creatDico(line);
   tes = getEasy(line, tes);
   tes = get6(line, tes);
@@ -118,3 +117,8 @@ const prompt_line = (line)=>{
 
 }
 
+
+console.log(array.reduce((acc,vl)=>{
+    return acc+parseInt(prompt_line(vl),10)
+
+},0))
