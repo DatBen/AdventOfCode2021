@@ -13,6 +13,23 @@ cd JavaScript
 
 npm init --yes
 
+echo '{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "1": "node src/p1.mjs",
+    "2": "node src/p2.mjs"
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+' > package.json
+
 
 mkdir src
 

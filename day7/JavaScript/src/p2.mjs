@@ -42,3 +42,4 @@ const min_fuel = (arr) => {
 };
 
 console.log(min_fuel(array));
+

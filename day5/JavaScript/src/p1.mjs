@@ -2,62 +2,58 @@ import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
-let grid = Array.from({ length: 1000 }, () =>
-  Array.from({ length: 1000 }, () => 0)
-);
+const data = array.map((i) => {
+  let row = i.split("->");
+  return [toInt(row[0].split(",")), toInt(row[1].split(","))];
+});
 
-const tLine = (entry, grid) => {
-  entry = entry.split(" ");
-  let c1 = entry[0].split(",");
-  let c2 = entry[2].split(",");
-  let max = 0;
-  c1 = toInt(c1);
-  c2 = toInt(c2);
-  if (c1[0] === c2[0]) {
-    let od = [c1[1], c2[1]].sort();
-    for (let i = od[0]; i < od[1] + 1; i++) {
-      grid[c1[0]][i]++;
-      if (grid[c1[0]][i] > max) {
-        max = grid[c1[0]][i];
-      }
+const range = (a, b) => {
+  let list = [];
+  if (a >= b) {
+    for (let i = b; i <= a; i++) {
+      list.push(i);
+    }
+  } else {
+    for (let i = a; i <= b; i++) {
+      list.push(i);
     }
   }
-  if (c1[1] === c2[1]) {
-    let od = [c1[0], c2[0]].sort();
-    for (let i = od[0]; i < od[1] + 1; i++) {
-      grid[i][c1[1]]++;
-      if (grid[i][c1[1]] > max) {
-        max = grid[i][c1[1]];
-      }
-    }
-  }
-  return [grid, max];
+  return list;
 };
 
-const compute = (arr, grid) => {
-  let max = 0;
+const init_board = (data) => {
+  let board = [];
+  for (let i = 0; i < 1000; i++) {
+    let add = [];
+    for (let j = 0; j < 1000; j++) {
+      add.push(0);
+    }
+    board.push(add);
+  }
+  data.forEach((vents) => {
+    if (vents[0][0] === vents[1][0]) {
+      let points = range(vents[0][1], vents[1][1]);
+      points.forEach((j) => {
+        board[vents[0][0]][j]++;
+      });
+    } else if (vents[0][1] === vents[1][1]) {
+      let points = range(vents[0][0], vents[1][0]);
 
-  arr.forEach((el) => {
-    let ctr = tLine(el, grid);
-    grid = ctr[0];
-    if (ctr[1] > max) {
-      max = ctr[1];
+      points.forEach((j) => {
+        board[j][vents[0][1]]++;
+      });
     }
   });
-
-  return [grid, max];
+  return board;
 };
 
-const numB = (grid) => {
-  let cpt = 0;
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
-      if (grid[i][j] > 1) {
-        cpt++;
-      }
-    }
+let board = init_board(data);
+
+const solution = board.flat().reduce((res, value) => {
+  if (value >= 2) {
+    return res + 1;
   }
-  return cpt;
-};
+  return res;
+}, 0);
 
-console.log(numB(compute(array,grid)[0]))
+console.log(solution);
