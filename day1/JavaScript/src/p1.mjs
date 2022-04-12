@@ -1,3 +1,5 @@
+console.time('exec time')
+
 import { readFileSync } from "fs";
 var array = readFileSync("data/data.txt").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
@@ -14,3 +16,6 @@ const res = array.reduce(
 );
 
 console.log(res[0]);
+
+
+console.timeEnd('exec time')

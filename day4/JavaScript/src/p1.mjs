@@ -1,3 +1,5 @@
+console.time("exec time");
+
 import { readFileSync } from "fs";
 
 var array = readFileSync("data/data.txt").toString().split("\n");
@@ -65,3 +67,4 @@ while (i <= draw.length && unfounded) {
 
 console.log(solution(winning_board, drawn));
 
+console.timeEnd("exec time");

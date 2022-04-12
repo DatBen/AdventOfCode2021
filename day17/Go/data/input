@@ -1,0 +1,5 @@
+target area: x=201..230, y=-99..-65
+xmin := 201
+xmax := 230
+ymax := -99
+ymin := -65

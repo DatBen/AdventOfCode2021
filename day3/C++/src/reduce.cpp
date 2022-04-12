@@ -10,13 +10,14 @@ int reduce_i(std::vector<std::string> lines, int i)
     {
         if (j[i] == '0')
         {
-            res[0] = res[0] + 1
+            res[0] = res[0] + 1;
         }
         else
         {
-            res[1] = res[1] + 1
-        }
+            res[1] = res[1] + 1;
+        };
     }
     if (res[0] > res[1])
-        return 0 return 1
+        return 0;
+    return 1;
 };

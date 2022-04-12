@@ -2,100 +2,120 @@ import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
-const data = array
-  .map((i) => i.split(" | "))
-  .map((i) => [i[0].split(" "), i[1].split(" ")]);
-
-const decode = (digit) => {
-  if (digit.length === 2) {
-    return [digit, 1];
-  }
-  if (digit.length === 4) {
-    return [digit, 4];
-  }
-  if (digit.length === 3) {
-    return [digit, 7];
-  }
-  if (digit.length === 7) {
-    return [digit, 8];
-  }
-  return -1;
+const lineDeco = (line) => {
+  let lt = line.split(" | ")[0].split(" ");
+  return lt;
 };
 
-const create_dictionary = (entry) => {
-  const base = entry.map((i) => decode(i));
-  let huit = base.find((i) => i[1] == 8)[0];
-  let un = base.find((i) => i[1] == 1)[0];
-  let quatre = base.find((i) => i[1] == 4)[0];
-  let sept = base.find((i) => i[1] == 7)[0];
-  let haut = soustraction(setp, un);
-  let bas_droit = soustraction(
-    soustraction(huit, haut),
-    soustracion(huit, sept)
-  );
-  let haut_droit = soustraction(
-    soustraction(quatre, soustraction(quatre, un)),
-    bas
-  );
-  let six = soustraction(huit, haut_droit);
-  let cinq = entry.find((i) => soustraction(six, i).length === 1);
-  let bas_gauche = soustraction(six, cinq);
-  let bas = soustraction(
-    soustraction(soustraction(huit, sept), soustracion(quatre, un)),
-    bas_gauche
-  );
-  let neuf = soustraction(huit, gauche);
-  let deux = entry.find((i) => soustraction(neuf, i).length === 1);
-  let trois = soustraction(addiction(deux, bas_droit), bas_gauche);
-  return [
-    [1, un],
-    [2, deux],
-    [3, trois],
-    [4, quatre],
-    [5, cinq],
-    [6, six],
-    [7, sept],
-    [8, huit],
-    [9, neuf],
-  ];
+const getEasy = (lt, dict) => {
+  lt.forEach((element) => {
+    switch (element.length) {
+      case 2:
+        dict["1"] = element;
+        break;
+      case 3:
+        dict["7"] = element;
+        break;
+      case 7:
+        dict["8"] = element;
+        break;
+      case 4:
+        dict["4"] = element;
+        break;
+    }
+  });
+
+  return dict;
 };
 
-const soustraction = (a, b) => {
-  let res = "";
-  for (let i = 0; i < a.length; i++) {
-    if (!b.includes(a[i])) {
-      res = res + a[i];
-    }
-  }
-  return res;
+const creatDico = (line) => {
+  let dict = {
+    0: "",
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+    7: "",
+    8: "",
+    9: "",
+  };
+  return dict;
 };
 
-const addiction = (a, b) => {
-  let res = "";
-  for (let i = 0; i < a.length; i++) {
-    if (!res.includes(a[i])) {
-      res = res + a[i];
+const contain = (qui, ou) => {
+  let flag = true;
+  for (let i = 0; i < qui.length; i++) {
+    if (!ou.includes(qui.charAt(i))) {
+      flag = false;
     }
   }
-  for (let i = 0; i < b.length; i++) {
-    if (!res.includes(b[i])) {
-      res = res + b[i];
+  return flag;
+};
+
+const get6 = (lt, dict) => {
+  lt.forEach((el) => {
+    if (el.length === 6) {
+      if (contain(dict["4"], el)) {
+        dict["9"] = el;
+      } else if (contain(dict["7"], el)) {
+        dict["0"] = el;
+      } else {
+        dict["6"] = el;
+      }
+    }
+  });
+
+  return dict;
+};
+
+const get5 = (lt, dict) => {
+  lt.forEach((el) => {
+    if (el.length === 5) {
+      if (contain(dict["7"], el)) {
+        dict["3"] = el;
+      } else if (contain(el, dict["9"])) {
+        dict["5"] = el;
+      } else {
+        dict["2"] = el;
+      }
+    }
+  });
+
+  return dict;
+};
+
+const decrypt = (line) => {
+  line = lineDeco(line);
+  let tes = creatDico(line);
+  tes = getEasy(line, tes);
+  tes = get6(line, tes);
+  tes = get5(line, tes);
+
+  return tes;
+};
+
+const returnNum = (dict, mot) => {
+  for (let i = 0; i < 10; i++) {
+    if (mot.length === dict[i].length) {
+      if (contain(mot, dict[i])) {
+        return i;
+      }
     }
   }
-  return res;
+};
+
+const prompt_line = (line) => {
+  let dict = decrypt(line);
+  let output = line.split(" | ")[1].split(" ");
+  return output.reduce((acc, vl) => {
+    return acc + returnNum(dict, vl);
+  }, "");
 };
 
 console.log(
-  create_dictionary([
-    "acedgfb",
-    "cdfbe",
-    "gcdfa",
-    "fbcad",
-    "dab",
-    "cefabd",
-    "cdfgeb",
-    "eafb",
-    "cagedb",
-    "ab",
-  ])
+  array.reduce((acc, vl) => {
+    return acc + parseInt(prompt_line(vl), 10);
+  }, 0)
 );
