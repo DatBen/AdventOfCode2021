@@ -1,156 +1,112 @@
-console.timeEnd("exec time");
+
+
 console.time("exec time");
 import { readFileSync } from "fs";
-import { get } from "https";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
-array = array.map((vl) => {
-  return toInt(vl.split(""));
-});
-const getPt = (arr, pt) => {
-  return arr[pt[1]][pt[0]];
-};
 
-const incl = (l, pt) => {
-  if (l.length == 0) {
-    return false;
-  }
-  return l.reduce((acc, vl) => {
-    if (vl[0] === pt[0] && vl[1] === pt[1]) {
-      return true;
-    } else {
-      return acc;
-    }
-  }, false);
-};
+const data = array.map((i) => toInt(i.split("")));
 
-const getNei = (arr, pt) => {
-  let x = pt[0];
-  let y = pt[1];
-  if (x == 0) {
-    if (y == 0) {
-      return [
-        [x, y + 1],
-        [x + 1, y],
-      ];
-    }
-    if (y == arr.length - 1) {
-      return [
-        [x, y - 1],
-        [x + 1, y],
-      ];
-    }
-    return [
-      [x, y - 1],
-      [x, y + 1],
-      [x + 1, y],
-    ];
-  }
-  if (x == arr[0].length - 1) {
-    if (y == 0) {
-      return [
-        [x, y + 1],
-        [x - 1, y],
-      ];
-    }
-    if (y == arr.length - 1) {
-      return [
-        [x - 1, y],
-        [x, y - 1],
-      ];
-    }
-    return [
-      [x - 1, y],
-      [x, y - 1],
-      [x, y + 1],
-    ];
-  }
-  if (y == 0) {
-    return [
-      [x, y + 1],
-      [x - 1, y],
-      [x + 1, y],
-    ];
-  }
-  if (y == arr.length - 1) {
-    return [
-      [x - 1, y],
-      [x + 1, y],
-      [x, y - 1],
-    ];
-  }
-  return [
-    [x, y - 1],
-    [x, y + 1],
-    [x - 1, y],
-    [x + 1, y],
-  ];
-};
-
-const isTrou = (arr, pt) => {
-  return getNei(arr, pt).reduce((acc, vl) => {
-    if (getPt(arr, pt) >= getPt(arr, vl)) {
-      return false;
-    } else {
-      return acc;
-    }
-  }, true);
-};
-
-let ij = Array.from({ length: array[0].length }, (_, i) => i);
-let y = Array.from({ length: array.length }, (_, i) => i);
-ij = ij
-  .map((vl) => {
-    return y.map((v) => {
-      return [vl, v];
+const find_low_points = (data) => {
+  const map_arround = data.map((value, i) => {
+    let row = value.map((point, j) => {
+      let res = [];
+      if (j < value.length - 1) {
+        res.push(value[j + 1]);
+      }
+      if (j > 0) {
+        res.push(value[j - 1]);
+      }
+      if (i > 0) {
+        res.push(data[i - 1][j]);
+      }
+      if (i < data.length - 1) {
+        res.push(data[i + 1][j]);
+      }
+      return [point, [i, j], res];
     });
-  })
-  .flat();
-
-let min = ij.reduce((acc, vl) => {
-  if (isTrou(array, vl)) {
-    return [...acc, vl];
-  } else {
-    return acc;
-  }
-}, []);
-
-const basin = (arr, pt, set) => {
-  if (getPt(arr, pt) == 9 || incl(set, pt)) {
-    return set;
-  } else {
-    set.push(pt);
-    getNei(arr, pt).forEach((vl) => {
-      set = basin(arr, vl, set);
-    });
-  }
-
-  return set;
-};
-console.log(min.length);
-const ans = (array, min) => {
-  min = min.map((vl) => {
-    return basin(array, vl, []).length;
+    return row;
   });
-  let max = [0, 0, 0];
-  let id = 0;
-  max.forEach((_, i) => {
-    min.forEach((l, j) => {
-      if (l > max[i]) {
-        max[i] = l;
-        id = j;
+  let low_points = map_arround
+    .flat()
+    .filter((i) => i[2].every((value) => value > i[0]))
+    .map((i) => [i[0], i[1]]);
+  return low_points;
+};
+
+const est_dans = (i, list) => {
+  let res = false;
+  list.forEach((element) => {
+    if (i[0] === element[0] && i[1] === element[1]) {
+      res = true;
+    }
+  });
+  return res;
+};
+
+const find_bassins = (data) => {
+  let low_points = find_low_points(data);
+  let index = -1;
+  let bassins = low_points.map((value) => {
+    let res = [];
+    let last_list = [value];
+    let add_list;
+    index++;
+    do {
+      add_list = [];
+      last_list.forEach((element) => {
+        if (!res.includes(element)) {
+          res.push([element]);
+        }
+        let i = element[1][0];
+        let j = element[1][1];
+
+        if (j < data[0].length - 1) {
+          if (element[0] < data[i][j + 1]) {
+            add_list.push([data[i][j + 1], [i, j + 1]]);
+          }
+        }
+        if (j > 0) {
+          if (element[0] < data[i][j - 1]) {
+            add_list.push([data[i][j - 1], [i, j - 1]]);
+          }
+        }
+        if (i > 0) {
+          if (element[0] < data[i - 1][j]) {
+            add_list.push([data[i - 1][j], [i - 1, j]]);
+          }
+        }
+        if (i < data.length - 1) {
+          if (element[0] < data[i + 1][j]) {
+            add_list.push([data[i + 1][j], [i + 1, j]]);
+          }
+        }
+
+        last_list = add_list;
+      });
+    } while (add_list.length > 0);
+    res = res.flat();
+    let temp = [];
+    let final = [];
+    res.forEach((element) => {
+      if (!est_dans(element[1], temp)) {
+        temp.push(element[1]);
+        if (element[0] != 9) {
+          final.push(element);
+        }
       }
     });
-
-    min.splice(id, 1);
+    return final;
   });
-  console.log(max);
-  console.log(
-    max.reduce((acc, vl) => {
-      return acc * vl;
-    }, 1)
-  );
+  return bassins;
 };
-ans(array, min);
+
+const solution = (data) => {
+  let bassins = find_bassins(data);
+  bassins = bassins.sort((a, b) => b.length - a.length);
+  return bassins[0].length * bassins[1].length * bassins[2].length;
+};
+
+console.log(solution(data));
 
 console.timeEnd("exec time");

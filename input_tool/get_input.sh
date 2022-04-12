@@ -7,9 +7,10 @@ node parse.mjs
 
 rm cookie
 dir=$PWD
-cd ../day$1/JavaScript/data
+cd ../day$1/$2/data
 
 wget --load-cookies $dir/cookie.txt https://adventofcode.com/2021/day/$1/input
 cd $dir
+
 
 rm cookie.txt

@@ -2,78 +2,43 @@ console.time("exec time");
 import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
-array = array.map((vl) => {
-  return toInt(vl.split(""));
-});
 
-const isTrou = (arr, x, y) => {
-  if (x == 0) {
-    if (y == 0) {
-      return arr[y][x] < arr[y][x + 1] && arr[y][x] < arr[y + 1][x];
-    }
-    if (y == arr.length - 1) {
-      return arr[y][x] < arr[y - 1][x] && arr[y][x] < arr[y][x + 1];
-    }
-    return (
-      arr[y][x] < arr[y - 1][x] &&
-      arr[y][x] < arr[y][x + 1] &&
-      arr[y][x] < arr[y + 1][x]
-    );
-  }
-  if (x == arr[0].length - 1) {
-    if (y == 0) {
-      return arr[y][x] < arr[y][x - 1] && arr[y][x] < arr[y + 1][x];
-    }
-    if (y == arr.length - 1) {
-      return arr[y][x] < arr[y - 1][x] && arr[y][x] < arr[y][x - 1];
-    }
-    return (
-      arr[y][x] < arr[y - 1][x] &&
-      arr[y][x] < arr[y][x - 1] &&
-      arr[y][x] < arr[y + 1][x]
-    );
-  }
-  if (y == 0) {
-    return (
-      arr[y][x] < arr[y + 1][x] &&
-      arr[y][x] < arr[y][x + 1] &&
-      arr[y][x] < arr[y][x - 1]
-    );
-  }
-  if (y == arr.length - 1) {
-    return (
-      arr[y][x] < arr[y - 1][x] &&
-      arr[y][x] < arr[y][x + 1] &&
-      arr[y][x] < arr[y][x - 1]
-    );
-  }
 
-  return (
-    arr[y][x] < arr[y - 1][x] &&
-    arr[y][x] < arr[y][x + 1] &&
-    arr[y][x] < arr[y][x - 1] &&
-    arr[y][x] < arr[y + 1][x]
-  );
+
+const data = array.map((i) => toInt(i.split("")));
+
+const find_low_points = (data) => {
+  const map_arround = data.map((value, i) => {
+    let row = value.map((point, j) => {
+      let res = [];
+      if (j < value.length - 1) {
+        res.push(value[j + 1]);
+      }
+      if (j > 0) {
+        res.push(value[j - 1]);
+      }
+      if (i > 0) {
+        res.push(data[i - 1][j]);
+      }
+      if (i < data.length - 1) {
+        res.push(data[i + 1][j]);
+      }
+      return [point, res];
+    });
+    return row;
+  });
+  let low_points = map_arround
+    .flat()
+    .filter((i) => i[1].every((value) => value > i[0]))
+    .map((i) => i[0]);
+  return low_points;
 };
 
-let ij = Array.from({ length: array[0].length }, (_, i) => i);
-let y = Array.from({ length: array.length }, (_, i) => i);
-ij = ij
-  .map((vl) => {
-    return y.map((v) => {
-      return [vl, v];
-    });
-  })
-  .flat();
+const solution = (data) => {
+  return find_low_points(data).reduce((res, value) => res + value + 1, 0);
+};
 
-ij = ij.reduce((acc, vl) => {
-  if (isTrou(array, vl[0], vl[1])) {
-    return acc + 1+array[vl[1]][vl[0]];
-  } else {
-    return acc;
-  }
-}, 0);
+console.log(solution(data));
 
-console.log(ij);
 
 console.timeEnd("exec time");
