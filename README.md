@@ -12,6 +12,7 @@ participating to https://adventofcode.com/
 
 #### Commande :
 
+
 - To generate the directory of the day i and get the input: ` ./gen_dir i`
 
 for JS:
@@ -24,11 +25,13 @@ for GO:
 - To run day n°i part j : `./run_day go i j`
 - To run unit test (if exist) for day n°i : `./run_test go i j`
 
+
 ### Few comments :
 
 ### - automatic init:
 
 If you don't run on Ubuntu and if you don't have mozilla, you can't use the command to get automatically the input of the day. Moreover you need to have sqlite3 and to have mozilla closed !
+
 
 ## - day 1:
 
@@ -58,6 +61,7 @@ For this we detect if the line id diagonal or not and then we trace it.
 Once the board is build we use reduce() to give the answer.
 
 ## - day 6:
+
 
 This day the naive approach worked well for the first part but in the second part, as the lisst was growing
 exponetially the memory overflowed, so it was necessary to take a new approach with a list of static size.
@@ -122,3 +126,4 @@ The code is working for some example, some units tests have been made
 In this day at first the code was working for the example but not our input
 because we did not took in consideration the fact that at the infinite the picture was switching between black and white each turn.
 The trick was to use the '&' operator with the first item of the algorithm and the parity of the decrypting loop.
+

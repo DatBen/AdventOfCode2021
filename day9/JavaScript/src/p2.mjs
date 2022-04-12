@@ -1,4 +1,5 @@
 
+
 console.time("exec time");
 import { readFileSync } from "fs";
 var array = readFileSync("data/input").toString().split("\n");
@@ -107,4 +108,5 @@ const solution = (data) => {
 };
 
 console.log(solution(data));
+
 console.timeEnd("exec time");

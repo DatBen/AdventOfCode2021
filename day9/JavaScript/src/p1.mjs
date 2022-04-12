@@ -4,6 +4,7 @@ var array = readFileSync("data/input").toString().split("\n");
 const toInt = (arr) => arr.map((i) => parseInt(i, 10));
 
 
+
 const data = array.map((i) => toInt(i.split("")));
 
 const find_low_points = (data) => {
@@ -38,5 +39,6 @@ const solution = (data) => {
 };
 
 console.log(solution(data));
+
 
 console.timeEnd("exec time");
